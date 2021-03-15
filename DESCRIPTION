@@ -18,7 +18,8 @@ Imports:
     nnet,
     pracma,
     stats,
-    utils
+    utils,
+    gtools
 Suggests: 
     knitr,
     rmarkdown

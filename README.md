@@ -14,9 +14,12 @@ function estimates a finite-mixture model using an EM algorithm
 (Dempster, Laird, Rubin, 1977).
 
 A function ‘dproxyme’ returns a list of estimated measurement
-(stochastic) matrices from discrete proxy variables. The ij-th element
-in a measurement matrix is the conditional probability of observing j-th
-(largest) proxy response value conditional on that the latent type is i.
+(stochastic) matrices and a type probability matrix from discrete proxy
+variables. The ij-th element in a measurement matrix is the conditional
+probability of observing j-th (largest) proxy response value conditional
+on that the latent type is i. The type probability matrix is of size N
+(num of obs) by sbar (num of type). The ij-th element of the type
+probability is the probability of observation i to belong to the type j.
 For further explanation on identification of measurement stochastic
 matrices, see Hu(2008) and Hu(2017).
 
@@ -46,17 +49,14 @@ devtools::install_github("yujunghwang/factormodel")
 
 ## Example 1 : dproxyme
 
+Below example shows how to use ‘dproxyme’ function to estimate
+measurement (stochastic) matrices of proxy variables and type
+probabilities. The code first simulates fake data using a data
+generating process provided below and then estimates the parameters
+using ‘dproxyme’ function.
+
 ``` r
 library(factormodel)
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(nnet)
 library(pracma)
 library(stats)
@@ -93,21 +93,89 @@ oout <- dproxyme(dat=dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,max
 print(oout$M_param)
 #> [[1]]
 #>                         2          3
-#> [1,] 0.8160435 0.09073877 0.09321774
-#> [2,] 0.1053269 0.19131273 0.70336038
+#> [1,] 0.8109318 0.09434914 0.09471906
+#> [2,] 0.1005454 0.21215160 0.68730298
 #> 
 #> [[2]]
 #>                        2          3
-#> [1,] 0.7110982 0.1894228 0.09947892
-#> [2,] 0.2058876 0.2022934 0.59181899
+#> [1,] 0.7004681 0.2075708 0.09196105
+#> [2,] 0.1955446 0.2081434 0.59631203
 #> 
 #> [[3]]
 #>                         2          3
-#> [1,] 0.9102475 0.04229629 0.04745621
-#> [2,] 0.1295547 0.10203853 0.76840678
+#> [1,] 0.9038930 0.04134642 0.05476054
+#> [2,] 0.1069748 0.10807967 0.78494554
+
+# check type probability
+print(head(oout$typeprob))
+#>             [,1]        [,2]
+#> [1,] 0.002224585 0.997775415
+#> [2,] 0.990309611 0.009690389
+#> [3,] 0.940488990 0.059511010
+#> [4,] 0.990309611 0.009690389
+#> [5,] 0.997283248 0.002716752
+#> [6,] 0.997283248 0.002716752
+
+# compare this to true type
+print(head(truetype))
+#> [1] 2 1 1 1 1 1
 ```
 
 ## Example 2 : cproxyme
+
+Below example shows how to use ‘cproxyme’ function to estimate a linear
+factor model. The code first simulates fake data using a data generating
+process provided below and then estimates the parameters using
+‘cproxyme’ function.
+
+``` r
+library(factormodel)
+library(stats)
+library(utils)
+library(gtools)
+#> 
+#> Attaching package: 'gtools'
+#> The following object is masked from 'package:pracma':
+#> 
+#>     logit
+
+set.seed(seed=210315)
+
+# DGP
+# set parameters
+nsam <- 5000 # number of observations
+np <- 3 # number of proxies
+
+true_mtheta <- 2
+true_vartheta <- 1.5
+true_theta <- rnorm(nsam, mean=true_mtheta, sd=sqrt(true_vartheta))
+
+# first proxy variable is an anchoring variable
+true_alpha0 <- c(0,2,5)
+true_alpha1 <- c(1,0.5,2)
+true_varnu  <- c(0.5,2,1)
+
+# simulate fake data
+dat <- matrix(NA,nrow=nsam,ncol=np)
+for (k in 1:np){
+  dat[,k] <- true_alpha0[k] + true_alpha1[k]*true_theta + rnorm(nsam,mean=0,sd=sqrt(true_varnu[k]))
+}
+
+# estimate parameters using cproxyme
+oout <- cproxyme(dat=dat,anchor=1)
+
+# print estimated parameters
+print(oout$alpha0)
+#> [1] 0.000000 2.032455 5.086428
+print(oout$alpha1)
+#> [1] 1.0000000 0.4913708 1.9630702
+print(oout$varnu)
+#> [1] 0.4827664 2.0430161 1.0605388
+print(oout$mtheta)
+#> [1] 1.990616
+print(oout$vartheta)
+#> [1] 1.586096
+```
 
 ## Conclusion
 
@@ -132,4 +200,13 @@ This vignette showed how to use functions in \`factormodel’ R package.
   - [Hu, Yingyao (2017). The econometrics of unobservables: Applications
     of measurement error models in empirical industrial organization and
     labor economics. Journal of
-    econometrics, 200(2), 154-168.](https://www.sciencedirect.com/science/article/pii/S0304407617300830?casa_token=gGghKpWlo0kAAAAA:4DcT91SeVK56FF1XFsn34pMKnBLv46VBBM3zhBj7Mj4q2q94LSZCMY0LHRtxUHvCma1QVjDV).
+    econometrics, 200(2), 154-168.](https://www.sciencedirect.com/science/article/pii/S0304407617300830?casa_token=gGghKpWlo0kAAAAA:4DcT91SeVK56FF1XFsn34pMKnBLv46VBBM3zhBj7Mj4q2q94LSZCMY0LHRtxUHvCma1QVjDV)
+
+  - [Hwang, Yujung (2021). Identification and Estimation of a Dynamic
+    Discrete Choice Models with Endogenous Time-Varying Unobservable
+    States Using Proxies. Working
+    Paper.](https://sites.google.com/view/yujunghwang/research?authuser=0)
+
+  - [Hwang, Yujung (2021). Bounding Omitted Variable Bias Using
+    Auxiliary Data. Working
+    Paper.](https://sites.google.com/view/yujunghwang/research?authuser=0)

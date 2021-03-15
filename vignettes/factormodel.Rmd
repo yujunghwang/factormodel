@@ -21,7 +21,7 @@ The R package **factormodel** provides functions to estimate a factor model usin
 
 When proxy variables are discrete, you can use 'dproxyme' function. The function estimates a finite-mixture model using an EM algorithm (Dempster, Laird, Rubin, 1977).
 
-A function 'dproxyme' returns a list of estimated measurement (stochastic) matrices from discrete proxy variables. The ij-th element in a measurement matrix is the conditional probability of observing j-th (largest) proxy response value conditional on that the latent type is i. For further explanation on identification of measurement stochastic matrices, see Hu(2008) and Hu(2017).
+A function 'dproxyme' returns a list of estimated measurement (stochastic) matrices and a type probability matrix from discrete proxy variables. The ij-th element in a measurement matrix is the conditional probability of observing j-th (largest) proxy response value conditional on that the latent type is i. The type probability matrix is of size N (num of obs) by sbar (num of type). The ij-th element of the type probability is the probability of observation i to belong to the type j. For further explanation on identification of measurement stochastic matrices, see Hu(2008) and Hu(2017).
 
 When proxy variables are continuous, you can use 'cproxyme' function. The function estimates a linear factor model assuming a continuous latent variable.
 
@@ -30,9 +30,8 @@ A function 'cproxyme' returns a list of linear factor model coefficients and the
 ## Example 1 : dproxyme
 
 
-```{r setup}
+```{r}
 library(factormodel)
-library(dplyr)
 library(nnet)
 library(pracma)
 library(stats)
@@ -68,11 +67,52 @@ oout <- dproxyme(dat=dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,max
 # check whether the estimated measurement stochastic matrices are same with the true # measurement stochastic matrices
 print(oout$M_param)
 
+# check type probability
+print(head(oout$typeprob))
 ```
 
 ## Example 2 : cproxyme
 
+Below example shows how to use 'cproxyme' function to estimate a linear factor model. The code first simulates fake data using a data generating process provided below and then estimates the parameters using 'cproxyme' function.
 
+```{r}
+library(factormodel)
+library(stats)
+library(utils)
+library(gtools)
+
+set.seed(seed=210315)
+
+# DGP
+# set parameters
+nsam <- 5000 # number of observations
+np <- 3 # number of proxies
+
+true_mtheta <- 2
+true_vartheta <- 1.5
+true_theta <- rnorm(nsam, mean=true_mtheta, sd=sqrt(true_vartheta))
+
+# first proxy variable is an anchoring variable
+true_alpha0 <- c(0,2,5)
+true_alpha1 <- c(1,0.5,2)
+true_varnu  <- c(0.5,2,1)
+
+# simulate fake data
+dat <- matrix(NA,nrow=nsam,ncol=np)
+for (k in 1:np){
+  dat[,k] <- true_alpha0[k] + true_alpha1[k]*true_theta + rnorm(nsam,mean=0,sd=sqrt(true_varnu[k]))
+}
+
+# estimate parameters using cproxyme
+oout <- cproxyme(dat=dat,anchor=1)
+
+# print estimated parameters
+print(oout$alpha0)
+print(oout$alpha1)
+print(oout$varnu)
+print(oout$mtheta)
+print(oout$vartheta)
+```
 
 ## Conclusion
 This vignette showed how to use functions in `factormodel' R package. 
@@ -85,6 +125,9 @@ This vignette showed how to use functions in `factormodel' R package.
 
 * [Hu, Yingyao (2008). Identification and estimation of nonlinear models with misclassification error using instrumental variables: A general solution. Journal of Econometrics, 144(1), 27-61.](https://www.sciencedirect.com/science/article/pii/S0304407607002436?casa_token=b9ManDs-MlQAAAAA:E02Ae5SIzmrGbIbCAFeSk-BI2pR9ZcZMSc7q28S8VJVDzj0gl-sKOS9fWTklX7nydQixJxMr)
 
-* [Hu, Yingyao (2017). The econometrics of unobservables: Applications of measurement error models in empirical industrial organization and labor economics. Journal of econometrics, 200(2), 154-168.](https://www.sciencedirect.com/science/article/pii/S0304407617300830?casa_token=gGghKpWlo0kAAAAA:4DcT91SeVK56FF1XFsn34pMKnBLv46VBBM3zhBj7Mj4q2q94LSZCMY0LHRtxUHvCma1QVjDV).
+* [Hu, Yingyao (2017). The econometrics of unobservables: Applications of measurement error models in empirical industrial organization and labor economics. Journal of econometrics, 200(2), 154-168.](https://www.sciencedirect.com/science/article/pii/S0304407617300830?casa_token=gGghKpWlo0kAAAAA:4DcT91SeVK56FF1XFsn34pMKnBLv46VBBM3zhBj7Mj4q2q94LSZCMY0LHRtxUHvCma1QVjDV)
 
+* [Hwang, Yujung (2021). Identification and Estimation of a Dynamic Discrete Choice Models with Endogenous Time-Varying Unobservable States Using Proxies. Working Paper.](https://sites.google.com/view/yujunghwang/research?authuser=0)
+
+* [Hwang, Yujung (2021). Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.](https://sites.google.com/view/yujunghwang/research?authuser=0)
 

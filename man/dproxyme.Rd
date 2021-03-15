@@ -42,7 +42,7 @@ dproxyme(
 \item{trace}{Whether to trace EM algorithm progress. Default is FALSE.}
 }
 \value{
-Returns a list of 4 components : \describe{
+Returns a list of 5 components : \describe{
 \item{M_param}{This is a list of estimated measurement (stochastic) matrices.
 The k-th matrix is a measurement matrix of a proxy variable saved in the kth column of dat data frame (or matrix).
 The ij-th element in a measurement matrix is the conditional probability of observing j-th (largest) proxy response value conditional on that the latent type is i.}
@@ -51,7 +51,9 @@ The ij-th element in a measurement matrix is the conditional probability of obse
 
 \item{M_param_row}{This is a list of row labels of 'M_param' matrices. It is simply c(1:sbar).}
 
-\item{mparam}{This is a list of multinomial logit coefficients which were used to compute 'M_param' matrices. These coefficients are useful to compute the likelihood of proxy responses.}}
+\item{mparam}{This is a list of multinomial logit coefficients which were used to compute 'M_param' matrices. These coefficients are useful to compute the likelihood of proxy responses.}
+
+\item{typeprob}{This is a type probability matrix of size N-by-sbar. The ij-th entry of this matrix gives the probability of observation i to have type j.}}
 }
 \description{
 This function estimates measurement stochastic matrices of discrete proxy variables.
@@ -59,6 +61,8 @@ This function estimates measurement stochastic matrices of discrete proxy variab
 \references{
 Hu, Yingyao (2008). Identification and estimation of nonlinear models with misclassification error using instrumental variables: A general solution. Journal of Econometrics, 144(1), 27-61.
 Hu, Yingyao (2017). The econometrics of unobservables: Applications of measurement error models in empirical industrial organization and labor economics. Journal of Econometrics, 200(2), 154-168.
+Hwang, Yujung (2021). Identification and Estimation of a Dynamic Discrete Choice Models with Endogenous Time-Varying Unobservable States Using Proxies. Working Paper.
+Hwang, Yujung (2021). Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.
 }
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}
