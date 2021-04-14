@@ -1,5 +1,5 @@
 Package: factormodel
-Title: functions to estimate a factor model using discrete and continuous proxy variables
+Title: Functions to Estimate a Factor Model using Discrete and Continuous Proxy Variables
 Version: 1.0
 Authors@R: 
     person(given = "Yujung",
@@ -10,7 +10,6 @@ Authors@R:
 Description: This package includes functions to estimate a factor model using discrete and 	continuous proxy variables.
 License: file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 

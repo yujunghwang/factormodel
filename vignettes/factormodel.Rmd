@@ -27,8 +27,22 @@ When proxy variables are continuous, you can use 'cproxyme' function. The functi
 
 A function 'cproxyme' returns a list of linear factor model coefficients and the variance of measurement errors in each proxy variable. For further explanation on identification of linear factor model, see Cunha, Heckman, Schennach (2010).
 
-## Example 1 : dproxyme
+## Installation
+You can install a package **factormodel** using either CRAN or github.
 
+```{r eval=FALSE}
+install.packages("factormodel")
+```
+
+or
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("yujunghwang/factormodel")
+```
+
+
+## Example 1 : dproxyme
 
 ```{r}
 library(factormodel)
