@@ -4,12 +4,14 @@
 \alias{cproxyme}
 \title{cproxyme}
 \usage{
-cproxyme(dat, anchor = 1)
+cproxyme(dat, anchor = 1, weights = NULL)
 }
 \arguments{
 \item{dat}{A proxy variable data frame list.}
 
 \item{anchor}{This is a column index of an anchoring proxy variable. Default is 1. That is, the code will use the first column in dat data frame as an achoring variable.}
+
+\item{weights}{An optional weight vector}
 }
 \value{
 Returns a list of 3 components : \describe{

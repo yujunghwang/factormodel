@@ -3,6 +3,8 @@
 export(cproxyme)
 export(dproxyme)
 export(makeDummy)
+export(weighted.cov)
+export(weighted.var)
 import(stats)
 importFrom(gtools,combinations)
 importFrom(nnet,multinom)

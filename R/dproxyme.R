@@ -21,6 +21,7 @@
 #' @param minobs Compute likelihood of a proxy variable only if there are more than "minobs" observations. Default is 100.
 #' @param maxiter2 Maximum number of iterations for "multinom". Default is 1000.
 #' @param trace Whether to trace EM algorithm progress. Default is FALSE.
+#' @param weights An optional weight vector
 #'
 #' @return Returns a list of 5 components : \describe{
 #' \item{M_param}{This is a list of estimated measurement (stochastic) matrices.
@@ -36,7 +37,7 @@
 #' \item{typeprob}{This is a type probability matrix of size N-by-sbar. The ij-th entry of this matrix gives the probability of observation i to have type j.}}
 #'
 #' @export
-dproxyme <- function(dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,maxiter=200,miniter=10,minobs=100,maxiter2=1000,trace=FALSE){
+dproxyme <- function(dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,maxiter=200,miniter=10,minobs=100,maxiter2=1000,trace=FALSE,weights=NULL){
 
   set.seed(seed)
 
@@ -56,6 +57,18 @@ dproxyme <- function(dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,max
 
   if (sbar<2){
     stop("please enter the number of types greater than or equal to 2.")
+  }
+
+  # check if the weights vector has a correct length
+  if (!is.null(weights)){
+    if (length(weights)!=dim(dat)[1]){
+      stop("Incorrect length for the weights vector. The length must be equal to the number of rows of 'dat'.")
+    }
+  }
+
+  # check if any weights vector includes NA or NaN or Inf
+  if (sum(is.na(weights))>0|sum(is.nan(weights))>0|sum(is.infinite(weights))>0){
+    stop("The weights vector can not include any NAs or NaNs or Infs.")
   }
 
   #############
@@ -125,6 +138,11 @@ dproxyme <- function(dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,max
   tqst <- matrix(tqst,ncol=1) ### matrix to use multinom
   typemat <- cbind(rep(1,sbar),eye(sbar)[,2:sbar])
 
+
+  if (!is.null(weights)){
+    tweights <- kronecker(rep(1,sbar),weights)
+  }
+
   ####################
   # start EM
   ####################
@@ -147,7 +165,13 @@ dproxyme <- function(dat,sbar=2,initvar=1,initvec=NULL,seed=210313,tol=0.005,max
     for (k in 1:np){
       if (sum(is.na(pdat[[k]])==0)>minobs){
         # run estimation if there are sufficiently many proxy obs.
-        mm <- multinom(pdat[[k]]~ittype,weights=tqst,maxit=maxiter2,trace=FALSE)
+
+        if (is.null(weights)){
+          mm <- multinom(pdat[[k]]~ittype,weights=tqst,maxit=maxiter2,trace=FALSE)
+        } else{
+          mm <- multinom(pdat[[k]]~ittype,weights=(tqst*tweights),maxit=maxiter2,trace=FALSE)
+        }
+
         mparam[[k]]   <- coef(mm)
         temp <- cbind(rep(0,dim(typemat)[2]),t(coef(mm)))
         numer <- exp(typemat%*%temp)

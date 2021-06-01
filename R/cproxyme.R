@@ -14,6 +14,8 @@
 #'
 #' @param anchor This is a column index of an anchoring proxy variable. Default is 1. That is, the code will use the first column in dat data frame as an achoring variable.
 #'
+#' @param weights An optional weight vector
+#'
 #' @return Returns a list of 3 components : \describe{
 #' \item{alpha0}{This is a vector of intercepts in a linear factor model. The k-th entry is the intercept of k-th proxy variable factor model.}
 #'
@@ -26,7 +28,7 @@
 #' \item{vartheta}{This is a variance of the latent variable.}}
 #'
 #' @export
-cproxyme <- function(dat,anchor=1){
+cproxyme <- function(dat,anchor=1,weights=NULL){
 
   # load libraries
   requireNamespace("stats")
@@ -39,6 +41,18 @@ cproxyme <- function(dat,anchor=1){
 
   if (!is.matrix(dat) & !is.data.frame(dat)){
     stop("please provide proxy data in either matrix or data frame format.")
+  }
+
+  # check if the weights vector has a correct length
+  if (!is.null(weights)){
+    if (length(weights)!=dim(dat)[1]){
+      stop("Incorrect length for the weights vector. The length must be equal to the number of rows of 'dat'.")
+    }
+  }
+
+  # check if any weights vector includes NA or NaN or Inf
+  if (sum(is.na(weights))>0|sum(is.nan(weights))>0|sum(is.infinite(weights))>0){
+    stop("The weights vector can not include any NAs or NaNs or Infs.")
   }
 
   #############
@@ -55,7 +69,11 @@ cproxyme <- function(dat,anchor=1){
   varnu  <- rep(NA,np)
 
   # mean of latent variable
-  mtheta <- mean(dat[,anchor],na.rm=TRUE)
+  if (is.null(weights)){
+    mtheta <- mean(dat[,anchor],na.rm=TRUE)
+  } else{
+    mtheta <- weighted.mean(x=dat[,anchor],w=weights,na.rm=TRUE)
+  }
 
   # anchoring variable coefficients
   alpha1[anchor] <- 1
@@ -69,7 +87,7 @@ cproxyme <- function(dat,anchor=1){
 
   temp <-0
   for (k in 1:nc){
-    temp <- temp + (cov(dat[,anchor],dat[,combo[k,1]],use="pairwise.complete.obs")*cov(dat[,anchor],dat[,combo[k,2]],use="pairwise.complete.obs")) / cov(dat[,combo[k,1]],dat[,combo[k,2]],use="pairwise.complete.obs")
+    temp <- temp + (weighted.cov(x=dat[,anchor],y=dat[,combo[k,1]],w=weights)*weighted.cov(x=dat[,anchor],y=dat[,combo[k,2]],w=weights)) / weighted.cov(x=dat[,combo[k,1]],y=dat[,combo[k,2]],w=weights)
   }
   vartheta <- temp/nc
   rm(temp)
@@ -77,19 +95,25 @@ cproxyme <- function(dat,anchor=1){
   # factor loading
   for (k in 1:np){
     if (k!=anchor){
-      alpha1[k] <- cov(dat[,anchor],dat[,k],use="pairwise.complete.obs")/vartheta
+      alpha1[k] <- weighted.cov(x=dat[,anchor],y=dat[,k],w=weights)/vartheta
     }
   }
 
   # variance of measurement error
   for (k in 1:np){
-    varnu[k] <- var(dat[,k],na.rm=TRUE) - (alpha1[k]^2) * vartheta
+    varnu[k] <- weighted.var(x=dat[,k],w=weights) - (alpha1[k]^2) * vartheta
   }
 
   # intercept
   for (k in 1:np){
     if (k!=anchor){
-      alpha0[k] <- mean(dat[,k],na.rm=TRUE) - alpha1[k] * mtheta
+
+      if (is.null(weights)){
+        alpha0[k] <- mean(dat[,k],na.rm=TRUE) - alpha1[k] * mtheta
+      } else{
+        alpha0[k] <- weighted.mean(x=dat[,k],w=weights,na.rm=TRUE) - alpha1[k] * mtheta
+      }
+
     }
   }
 

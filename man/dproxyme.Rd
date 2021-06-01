@@ -15,7 +15,8 @@ dproxyme(
   miniter = 10,
   minobs = 100,
   maxiter2 = 1000,
-  trace = FALSE
+  trace = FALSE,
+  weights = NULL
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ dproxyme(
 \item{maxiter2}{Maximum number of iterations for "multinom". Default is 1000.}
 
 \item{trace}{Whether to trace EM algorithm progress. Default is FALSE.}
+
+\item{weights}{An optional weight vector}
 }
 \value{
 Returns a list of 5 components : \describe{
