@@ -4,8 +4,9 @@
 #' proxy = intercept + factorloading * (latent variable) + measurement error
 #' The measurement error is assumed to follow a Normal distribution with a mean zero and a variance, which needs to be estimated.
 #' @author Yujung Hwang, \email{yujungghwang@gmail.com}
-#' @references Cunha, F., Heckman, J. J., & Schennach, S. M. (2010). Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931.
-#'             Hwang, Yujung (2021). Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.
+#' @references \describe{
+#' \item{Cunha, F., Heckman, J. J., & Schennach, S. M. (2010)}{Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931. <doi:10.3982/ECTA6551:>}
+#' \item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.}}
 #' @importFrom utils install.packages
 #' @importFrom gtools combinations
 #' @import     stats
@@ -26,6 +27,12 @@
 #' \item{mtheta}{This is a mean of the latent variable. It is equal to the mean of the anchoring proxy variable.}
 #'
 #' \item{vartheta}{This is a variance of the latent variable.}}
+#'
+#' @examples
+#' dat1 <- data.frame(proxy1=c(1,2,3),proxy2=c(0.1,0.3,0.6),proxy3=c(2,3,5))
+#' cproxyme(dat=dat1,anchor=1)
+#' ## you can specify weights
+#' cproxyme(dat=dat1,anchor=1,weights=c(0.1,0.5,0.4))
 #'
 #' @export
 cproxyme <- function(dat,anchor=1,weights=NULL){

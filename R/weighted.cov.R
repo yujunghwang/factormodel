@@ -10,8 +10,15 @@
 #' 
 #' @return Returns an unbiased sample weighted covariance
 #'
+#' @examples 
+#' # If you do not specify weights, 
+#' # it returns the usual unweighted sample covariance 
+#' weighted.cov(x=c(1,3,5),y=c(2,3,1)) 
+#' 
+#' weighted.cov(x=c(1,3,5),y=c(2,3,1),w=c(0.1,0.5,0.4))
+#' 
 #' @export
-weighted.cov <- function(x,y,w){
+weighted.cov <- function(x,y,w=NULL){
   
   if (is.null(w)){
     res <- cov(x,y,use="pairwise.complete.obs")

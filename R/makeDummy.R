@@ -12,6 +12,9 @@
 #'      The row sum of dZ must be 1 by construction.
 #'      }
 #'
+#' @examples
+#' makeDummy(c(1,2,3))
+#'
 #' @export
 makeDummy <- function(tZ){
 

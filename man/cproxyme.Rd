@@ -31,9 +31,17 @@ The linear factor model to estimate has the following form.
 proxy = intercept + factorloading * (latent variable) + measurement error
 The measurement error is assumed to follow a Normal distribution with a mean zero and a variance, which needs to be estimated.
 }
+\examples{
+dat1 <- data.frame(proxy1=c(1,2,3),proxy2=c(0.1,0.3,0.6),proxy3=c(2,3,5))
+cproxyme(dat=dat1,anchor=1)
+## you can specify weights
+cproxyme(dat=dat1,anchor=1,weights=c(0.1,0.5,0.4))
+
+}
 \references{
-Cunha, F., Heckman, J. J., & Schennach, S. M. (2010). Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931.
-Hwang, Yujung (2021). Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.
+\describe{
+\item{Cunha, F., Heckman, J. J., & Schennach, S. M. (2010)}{Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931. \url{doi:10.3982/ECTA6551:}}
+\item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.}}
 }
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}

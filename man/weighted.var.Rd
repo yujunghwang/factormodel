@@ -4,7 +4,7 @@
 \alias{weighted.var}
 \title{weighted.var}
 \usage{
-weighted.var(x, w)
+weighted.var(x, w = NULL)
 }
 \arguments{
 \item{x}{A vector to compute a variance, var(x)}
@@ -16,6 +16,14 @@ Returns an unbiased sample weighted variance
 }
 \description{
 This function is to compute an unbiased sample weighted variance.
+}
+\examples{
+## If you do not specify weights, 
+## it returns the usual unweighted sample variance
+weighted.var(x=c(1,3,5)) 
+
+weighted.var(x=c(1,3,5),w=c(0.1,0.5,0.4))
+
 }
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}

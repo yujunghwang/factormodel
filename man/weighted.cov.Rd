@@ -4,7 +4,7 @@
 \alias{weighted.cov}
 \title{weighted.cov}
 \usage{
-weighted.cov(x, y, w)
+weighted.cov(x, y, w = NULL)
 }
 \arguments{
 \item{x}{An input vector to compute a covariance, cov(x,y)}
@@ -18,6 +18,14 @@ Returns an unbiased sample weighted covariance
 }
 \description{
 This function is to compute an unbiased sample weighted covariance. The function uses only pairwise complete observations.
+}
+\examples{
+# If you do not specify weights, 
+# it returns the usual unweighted sample covariance 
+weighted.cov(x=c(1,3,5),y=c(2,3,1)) 
+
+weighted.cov(x=c(1,3,5),y=c(2,3,1),w=c(0.1,0.5,0.4))
+
 }
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}

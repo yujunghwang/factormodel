@@ -19,6 +19,10 @@ The row sum of dZ must be 1 by construction.
 \description{
 This function is to make dummy variables using a discrete variable.
 }
+\examples{
+makeDummy(c(1,2,3))
+
+}
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}
 }
