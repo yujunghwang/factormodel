@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "yujungghwang@gmail.com",
            comment = c(ORCID = "https://orcid.org/0000-0002-8136-8987"))
-Description: Functions to estimate a factor model using discrete and continuous proxy variables. The function 'dproxyme' estimates a factor model of discrete proxy variables using an EM algorithm (Dempster, Laird, Rubin (1977) <doi:10.1111/j.2517-6161.1977.tb01600.x>; Hu (2008) <doi:10.1016/j.jeconom.2007.12.001>; Hu(2017) <doi:10.1016/j.jeconom.2017.06.002> ). The function 'cproxyme' estimates a linear factor model (Cunha, Heckman, and Schennach (2010) <doi:10.3982/ECTA6551:>).
+Description: Functions to estimate a factor model using discrete and continuous proxy variables. The function 'dproxyme' estimates a factor model of discrete proxy variables using an EM algorithm (Dempster, Laird, Rubin (1977) <doi:10.1111/j.2517-6161.1977.tb01600.x>; Hu (2008) <doi:10.1016/j.jeconom.2007.12.001>; Hu(2017) <doi:10.1016/j.jeconom.2017.06.002> ). The function 'cproxyme' estimates a linear factor model (Cunha, Heckman, and Schennach (2010) <doi:10.3982/ECTA6551>).
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

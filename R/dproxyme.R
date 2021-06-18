@@ -2,11 +2,11 @@
 #' @description This function estimates measurement stochastic matrices of discrete proxy variables.
 #' @author Yujung Hwang, \email{yujungghwang@gmail.com}
 #' @references \describe{
-#'  \item{Dempster, Arthur P., Nan M. Laird, and Donald B. Rubin (1977)}{"Maximum likelihood from incomplete data via the EM algorithm." Journal of the Royal Statistical Society: Series B (Methodological) 39.1 : 1-22. <doi:10.1111/j.2517-6161.1977.tb01600.x>}
-#'  \item{Hu, Yingyao (2008)}{Identification and estimation of nonlinear models with misclassification error using instrumental variables: A general solution. Journal of Econometrics, 144(1), 27-61. <doi:10.1016/j.jeconom.2007.12.001>}
-#'  \item{Hu, Yingyao (2017)}{The econometrics of unobservables: Applications of measurement error models in empirical industrial organization and labor economics. Journal of Econometrics, 200(2), 154-168. <doi:10.1016/j.jeconom.2017.06.002>}
-#'  \item{Hwang, Yujung (2021)}{Identification and Estimation of a Dynamic Discrete Choice Models with Endogenous Time-Varying Unobservable States Using Proxies. Working Paper.}
-#'  \item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.}}
+#'  \item{Dempster, Arthur P., Nan M. Laird, and Donald B. Rubin (1977)}{"Maximum likelihood from incomplete data via the EM algorithm." Journal of the Royal Statistical Society: Series B (Methodological) 39.1 : 1-22. \doi{10.1111/j.2517-6161.1977.tb01600.x}}
+#'  \item{Hu, Yingyao (2008)}{Identification and estimation of nonlinear models with misclassification error using instrumental variables: A general solution. Journal of Econometrics, 144(1), 27-61. \doi{10.1016/j.jeconom.2007.12.001}}
+#'  \item{Hu, Yingyao (2017)}{The econometrics of unobservables: Applications of measurement error models in empirical industrial organization and labor economics. Journal of Econometrics, 200(2), 154-168. \doi{10.1016/j.jeconom.2017.06.002}}
+#'  \item{Hwang, Yujung (2021)}{Identification and Estimation of a Dynamic Discrete Choice Models with Endogenous Time-Varying Unobservable States Using Proxies. Working Paper. \doi{10.2139/ssrn.3535098}}
+#'  \item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper. \doi{10.2139/ssrn.3866876}}}
 #' @importFrom utils install.packages
 #' @importFrom nnet multinom
 #' @import     stats

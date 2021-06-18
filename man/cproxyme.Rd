@@ -40,8 +40,8 @@ cproxyme(dat=dat1,anchor=1,weights=c(0.1,0.5,0.4))
 }
 \references{
 \describe{
-\item{Cunha, F., Heckman, J. J., & Schennach, S. M. (2010)}{Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931. \url{doi:10.3982/ECTA6551:}}
-\item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper.}}
+\item{Cunha, F., Heckman, J. J., & Schennach, S. M. (2010)}{Estimating the technology of cognitive and noncognitive skill formation. Econometrica, 78(3), 883-931. \doi{10.3982/ECTA6551}}
+\item{Hwang, Yujung (2021)}{Bounding Omitted Variable Bias Using Auxiliary Data. Working Paper. \doi{10.2139/ssrn.3866876}}}
 }
 \author{
 Yujung Hwang, \email{yujungghwang@gmail.com}
